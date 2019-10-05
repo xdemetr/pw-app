@@ -4,7 +4,7 @@ const FormControl = ({input, meta, child, element, ...props}) => {
   const hasError = meta.touched && meta.error;
 
   return (
-      <div className={'form-group' + " " + (hasError ? 'has-danger' : '')}>
+      <div className={'form-group' + ' ' + (hasError ? 'has-danger' : '')}>
         {props.children}
         {hasError && <div className="invalid-feedback">{meta.error}</div> }
       </div>
@@ -19,7 +19,7 @@ const Input  = (props) => {
   return(
       <FormControl {...props}>
         <input {...input} {...restProps}
-               className={"form-control" + " " + (hasError ? 'is-invalid' : '')}  />
+               className={'form-control' + ' ' + (hasError ? 'is-invalid' : '')}  />
       </FormControl>
   )
 };

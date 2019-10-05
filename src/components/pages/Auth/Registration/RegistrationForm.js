@@ -11,7 +11,7 @@ const RegistrationForm = (props) => {
       <form onSubmit={props.handleSubmit}>
         <Field
             validate={[required]}
-            component={Input} placeholder="Name" name={"name"} required />
+            component={Input} placeholder="Name" name={"username"} />
 
         <Field
             validate={[required, email]}
