@@ -2,23 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 import RegistrationForm from './RegistrationForm';
 import {registration} from '../../../../store/reducers/auth-reducer';
-import {Redirect} from 'react-router-dom';
-import Spinner from '../../../Spinner';
 import Error from '../../../Error';
+import {compose} from 'redux';
+import {withAuthRedirect} from '../../../../hoc';
 
 const Registration = (props) => {
-
-  if (props.auth.isAuth) {
-    return <Redirect to={`/profile`}/>
-  }
 
   const onSubmit = ({username, email, password}) => {
     props.registration(username, email, password)
   };
-
-  if (props.auth.loading) {
-    return <Spinner />
-  }
 
   return (
       <div className="registration-page col-md-6 m-auto">
@@ -29,8 +21,7 @@ const Registration = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth
-});
-
-export default connect(mapStateToProps, {registration})(Registration);
+export default compose(
+    connect(null, {registration}),
+    withAuthRedirect
+)(Registration)
