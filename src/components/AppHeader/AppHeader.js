@@ -3,8 +3,12 @@ import {Link, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logout} from '../../store/reducers/auth-reducer';
 import s from './AppHeader.module.css';
+import {getAuth} from '../../store/selectors/auth-selectors';
 
 const AppHeader = (props) => {
+
+  const {username, balance} = props.auth.user;
+  const {isAuth} = props.auth;
 
   const onLogout = () => {
     props.logout()
@@ -25,8 +29,8 @@ const AppHeader = (props) => {
       <React.Fragment>
         <li className="nav-item">
           <NavLink to="/profile" className="nav-link">
-            {props.auth.user.username}
-            <span className={`${s.balance} badge badge-warning ml-1`}>{props.auth.user.balance}</span>
+            {username}
+            <span className={`${s.balance} badge badge-warning ml-1`}>{balance}</span>
           </NavLink>
         </li>
 
@@ -36,7 +40,7 @@ const AppHeader = (props) => {
       </React.Fragment>
     );
 
-  const renderItems = props.auth.isAuth ? userAuth : userGuest;
+  const renderItems = isAuth ? userAuth : userGuest;
 
   return (
       <div className="navbar navbar-expand-lg navbar-dark bg-primary app-header mb-4">
@@ -54,7 +58,7 @@ const AppHeader = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  auth: state.auth
+  auth: getAuth(state)
 });
 
 export default connect(mapStateToProps, {logout})(AppHeader);

@@ -1,4 +1,5 @@
 import React from 'react';
+import {withAuthRedirect} from '../../../hoc';
 
 const Profile = (props) => {
   return (
@@ -8,4 +9,4 @@ const Profile = (props) => {
   );
 };
 
-export default Profile;
+export default withAuthRedirect(Profile);

@@ -2,23 +2,15 @@ import React from 'react';
 import LoginForm from './LoginForm';
 import {connect} from 'react-redux';
 import {login} from '../../../../store/reducers/auth-reducer';
-import {Redirect} from 'react-router-dom';
-import Spinner from '../../../Spinner';
 import Error from '../../../Error';
+import {compose} from 'redux';
+import {withAuthRedirect} from '../../../../hoc';
 
 const Login = (props) => {
 
   const onSubmit = ({email, password}) => {
     props.login(email, password)
   };
-
-  if (props.auth.isAuth) {
-    return <Redirect to={`/profile`}/>
-  }
-
-  if (props.auth.loading) {
-    return <Spinner />
-  }
 
   return (
       <div className="login-page col-md-6 m-auto">
@@ -29,8 +21,7 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: state.auth
-});
-
-export default connect(mapStateToProps, {login})(Login);
+export default compose(
+    connect(null, {login}),
+    withAuthRedirect
+)(Login);
