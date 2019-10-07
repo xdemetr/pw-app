@@ -1,9 +1,9 @@
 import Login from './Auth/Login/Login';
 import Registration from './Auth/Registration/Registration';
-import Profile from './Profile';
+import ProfileContainer from './Profile/ProfileContainer';
 
 export {
   Login,
   Registration,
-  Profile
+  ProfileContainer
 }
