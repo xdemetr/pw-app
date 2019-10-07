@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {login} from '../../../../store/reducers/auth-reducer';
 import Error from '../../../Error';
 import {compose} from 'redux';
+import {Redirect} from 'react-router-dom';
 import {withAuthRedirect} from '../../../../hoc';
 
 const Login = (props) => {
@@ -11,6 +12,10 @@ const Login = (props) => {
   const onSubmit = ({email, password}) => {
     props.login(email, password)
   };
+
+  if (props.auth.isAuth) {
+    return <Redirect to={`/profile`} />
+  }
 
   return (
       <div className="login-page col-md-6 m-auto">
@@ -23,5 +28,5 @@ const Login = (props) => {
 
 export default compose(
     connect(null, {login}),
-    withAuthRedirect
+    withAuthRedirect,
 )(Login);
