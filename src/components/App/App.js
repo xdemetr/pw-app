@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import {Route} from 'react-router-dom';
 import AppHeader from '../AppHeader';
-import {Login, Registration, ProfileContainer} from '../pages';
+import {Login, Registration, ProfileContainer, TransactionHistoryContainer} from '../pages';
 
 const App = () => {
   return (
@@ -13,6 +13,8 @@ const App = () => {
           <Route path='/login' render={() => <Login/>}/>
           <Route path='/registration' render={() => <Registration/>}/>
           <Route path='/profile' render={() => <ProfileContainer/>}/>
+
+          <Route path='/transaction-history' render={() => <TransactionHistoryContainer/>} />
         </div>
       </div>
   );
