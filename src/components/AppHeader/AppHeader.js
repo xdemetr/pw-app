@@ -3,7 +3,7 @@ import {Link, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {logout} from '../../store/reducers/auth-reducer';
 import s from './AppHeader.module.css';
-import {getAuth} from '../../store/selectors/auth-selectors';
+import {getAuth} from '../../store/selectors';
 
 const AppHeader = (props) => {
 
@@ -27,6 +27,12 @@ const AppHeader = (props) => {
 
   const userAuth = (
       <React.Fragment>
+        <li className="nav-item">
+          <NavLink to="/transaction-history" className="nav-link">
+            Transaction history
+          </NavLink>
+        </li>
+
         <li className="nav-item">
           <NavLink to="/profile" className="nav-link">
             {username}

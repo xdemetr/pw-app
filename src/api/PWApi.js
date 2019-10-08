@@ -12,7 +12,13 @@ export const authAPI = {
 };
 
 export const userAPI = {
-  profile(id_token){
+  profile(){
     return axios.get(`api/protected/user-info`)
+  }
+};
+
+export const TransactionAPI = {
+  history(){
+    return axios.get(`api/protected/transactions`)
   }
 };

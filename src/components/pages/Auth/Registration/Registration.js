@@ -4,7 +4,7 @@ import RegistrationForm from './RegistrationForm';
 import {registration} from '../../../../store/reducers/auth-reducer';
 import Error from '../../../Error';
 import {compose} from 'redux';
-import {getAuth} from '../../../../store/selectors/auth-selectors';
+import {getAuth} from '../../../../store/selectors';
 import {Redirect} from 'react-router-dom';
 
 const Registration = (props) => {

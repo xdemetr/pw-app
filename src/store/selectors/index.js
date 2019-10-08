@@ -5,3 +5,7 @@ export const getAuth = (state) => {
 export const getProfile = (state) => {
   return state.auth.profile
 };
+
+export const getTransactions = (state) => {
+  return state.transaction
+};
