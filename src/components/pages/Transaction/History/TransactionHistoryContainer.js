@@ -4,7 +4,7 @@ import {compose} from 'redux';
 import {withAuthRedirect} from '../../../../hoc';
 import {connect} from 'react-redux';
 import {transactionsHistory} from '../../../../store/reducers/transaction-reducer';
-import {getAuth, getTransactions} from '../../../../store/selectors';
+import {getProfile, getTransactions} from '../../../../store/selectors';
 import Spinner from '../../../Spinner';
 import {Redirect} from 'react-router-dom';
 
@@ -30,11 +30,11 @@ class TransactionHistoryContainer extends React.Component {
 };
 
 const mapStateToProps = (state) => ({
-  auth: getAuth(state),
+  auth: getProfile(state),
   transaction: getTransactions(state)
 });
 
 export default compose(
-    connect(mapStateToProps, {transactionsHistory}),
+    connect(mapStateToProps, {transactionsHistory, getProfile}),
     withAuthRedirect
 )(TransactionHistoryContainer);

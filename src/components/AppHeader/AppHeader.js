@@ -7,7 +7,7 @@ import {getAuth} from '../../store/selectors';
 
 const AppHeader = (props) => {
 
-  const {username, balance} = props.auth.user;
+  const {name, balance} = props.auth.profile;
   const {isAuth} = props.auth;
 
   const onLogout = () => {
@@ -27,6 +27,13 @@ const AppHeader = (props) => {
 
   const userAuth = (
       <React.Fragment>
+        <li className="nav-item mr-2">
+          <NavLink to="/transaction-add" className=" btn btn-info pt-1 pb-1">
+            <span className="badge badge-pill badge-light mr-1">+</span>
+            New transaction
+          </NavLink>
+        </li>
+
         <li className="nav-item">
           <NavLink to="/transaction-history" className="nav-link">
             Transaction history
@@ -35,7 +42,7 @@ const AppHeader = (props) => {
 
         <li className="nav-item">
           <NavLink to="/profile" className="nav-link">
-            {username}
+            {name}
             <span className={`${s.balance} badge badge-warning ml-1`}>{balance}</span>
           </NavLink>
         </li>
@@ -64,7 +71,7 @@ const AppHeader = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  auth: getAuth(state)
+  auth: getAuth(state) //TODO: profile hide when reload app
 });
 
 export default connect(mapStateToProps, {logout})(AppHeader);
