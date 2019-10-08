@@ -20,5 +20,8 @@ export const userAPI = {
 export const TransactionAPI = {
   history(){
     return axios.get(`api/protected/transactions`)
+  },
+  add(name, amount){
+    return axios.post(`api/protected/transactions`, {name, amount})
   }
 };

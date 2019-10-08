@@ -5,9 +5,9 @@ import {email, required} from '../../../../utils/validators';
 
 const LoginForm = (props) => {
 
+  //TODO:use stopSubmit in form
   return (
       <form onSubmit={props.handleSubmit}>
-
         <Field
             validate={[required, email]}
             component={Input} placeholder="Email" name={"email"}/>
