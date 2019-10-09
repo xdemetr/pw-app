@@ -5,7 +5,7 @@ import {login} from '../../../../store/reducers/auth-reducer';
 import Error from '../../../Error';
 import {compose} from 'redux';
 import {Redirect} from 'react-router-dom';
-import {withAuthRedirect} from '../../../../hoc';
+import {getAuth} from '../../../../store/selectors';
 
 const Login = (props) => {
 
@@ -26,7 +26,10 @@ const Login = (props) => {
   );
 };
 
+const mapStateToProps = (state) => ({
+  auth: getAuth(state)
+});
+
 export default compose(
-    connect(null, {login}),
-    withAuthRedirect,
+    connect(mapStateToProps, {login})
 )(Login);

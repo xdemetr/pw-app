@@ -32,5 +32,4 @@ const mapStateToProps = (state) => ({
 
 export default compose(
     connect(mapStateToProps, {registration}),
-    //withAuthRedirect
 )(Registration)

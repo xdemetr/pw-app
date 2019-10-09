@@ -7,5 +7,5 @@ export const getProfile = (state) => {
 };
 
 export const getTransactions = (state) => {
-  return state.transaction
+  return state.transaction.list
 };

@@ -160,13 +160,15 @@ export const login = (email, password) => (dispatch) => {
 };
 
 export const getAuthUser = (token = localStorage.getItem('jwtToken')) => (dispatch) => {
-  dispatch(profileRequested());
+  if (token) {
+    dispatch(profileRequested());
 
-  userAPI.profile(token)
-      .then(res => {
-        dispatch(profileLoaded(res.data.user_info_token));
-      })
-      .catch(err => console.log(err.response))
+    userAPI.profile(token)
+        .then(res => {
+          dispatch(profileLoaded(res.data.user_info_token));
+        })
+        .catch(err => console.log(err.response))
+  }
 };
 
 export const logout = () => (dispatch) => {

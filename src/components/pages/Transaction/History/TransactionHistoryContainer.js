@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import {transactionsHistory} from '../../../../store/reducers/transaction-reducer';
 import {getProfile, getTransactions} from '../../../../store/selectors';
 import Spinner from '../../../Spinner';
-import {Redirect} from 'react-router-dom';
 
 class TransactionHistoryContainer extends React.Component {
 
@@ -15,22 +14,17 @@ class TransactionHistoryContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.auth.isAuth) {
-      return <Redirect to={`/login`} />
-    }
-
-    if (!this.props.transaction.list) {
+    if (!this.props.transaction) {
       return <Spinner/>;
     }
 
     return (
-        <TransactionHistory list={this.props.transaction.list} />
+        <TransactionHistory list={this.props.transaction} />
     );
   }
 };
 
 const mapStateToProps = (state) => ({
-  auth: getProfile(state),
   transaction: getTransactions(state)
 });
 
