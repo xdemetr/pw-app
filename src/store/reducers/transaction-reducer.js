@@ -96,11 +96,9 @@ export const newTransaction = ({name, amount}) => (dispatch) => {
         }
       })
       .catch(err => {
-        //debugger
         dispatch(stopSubmit('addTransaction',
             {_error: err.response.data}
         ));
-        //dispatch(transactionAddError(err.response.data))
       })
 };
 

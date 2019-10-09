@@ -2,7 +2,6 @@ import React from 'react';
 import LoginForm from './LoginForm';
 import {connect} from 'react-redux';
 import {login} from '../../../../store/reducers/auth-reducer';
-import Error from '../../../Error';
 import {compose} from 'redux';
 import {Redirect} from 'react-router-dom';
 import {getAuth} from '../../../../store/selectors';
@@ -20,7 +19,6 @@ const Login = (props) => {
   return (
       <div className="login-page col-md-6 m-auto">
         <h1>Login</h1>
-        <Error message={props.auth.error} />
         <LoginForm onSubmit={onSubmit}/>
       </div>
   );

@@ -17,7 +17,6 @@ let initialState = {
   user: {},
   profile: {},
   loading: false,
-  error: null
 };
 
 const authReducer = (state = initialState, action) => {
@@ -89,13 +88,6 @@ export const userLoaded = (decoded) => {
   }
 };
 
-const userError = (error) => {
-  return {
-    type: AUTH_USER_FAILURE,
-    payload: error
-  }
-};
-
 export const userLogout = () => {
   return {
     type: LOGOUT_USER
@@ -131,7 +123,9 @@ export const registration = (username, email, password) => (dispatch) => {
         }
       })
       .catch(err => {
-        dispatch(userError(err.response.data))
+        dispatch(stopSubmit('registration',
+            {_error: err.response.data}
+        ));
       });
 };
 
@@ -155,7 +149,6 @@ export const login = (email, password) => (dispatch) => {
         dispatch(stopSubmit("login",
             {_error: err.response.data}
         ));
-        dispatch(userError(err.response.data))
       })
 };
 

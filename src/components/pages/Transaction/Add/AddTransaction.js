@@ -2,7 +2,6 @@ import React from 'react';
 import AddTransactionForm from './AddTransactionForm';
 import {connect} from 'react-redux';
 import {newTransaction} from '../../../../store/reducers/transaction-reducer';
-import {getAuth} from '../../../../store/selectors';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../../../../hoc';
 
@@ -22,7 +21,6 @@ const AddTransaction = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  auth: getAuth(state),
   transaction: state.transaction
 });
 
