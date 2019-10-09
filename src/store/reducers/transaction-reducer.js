@@ -10,7 +10,8 @@ const ADD_TRANSACTION_SUCCESS = 'ADD_TRANSACTION_SUCCESS';
 let initialState = {
   list: null,
   loading: false,
-  message: null
+  message: null,
+  filter: null
 };
 
 const transactionReducer = (state = initialState, action) => {
@@ -43,6 +44,13 @@ const transactionReducer = (state = initialState, action) => {
         ...state,
         message: action.payload,
         loading: false
+      }
+    }
+
+    case 'FILTER_TRANSACTION': {
+      return {
+        ...state,
+        filter: action.payload
       }
     }
 
@@ -84,6 +92,13 @@ export const transactionsHistory = (token = localStorage.getItem('jwtToken')) =>
             dispatch(transactionsLoaded(res.data.trans_token));
           }
       )
+};
+
+export const transactionFilter = (filter = 'all') => (dispatch) =>{
+  dispatch({
+    type: 'FILTER_TRANSACTION',
+    payload: filter
+  })
 };
 
 export const newTransaction = ({name, amount}) => (dispatch) => {
