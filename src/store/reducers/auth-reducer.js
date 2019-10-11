@@ -81,7 +81,7 @@ const userRequested = () => {
   }
 };
 
-export const userLoaded = (decoded) => {
+export const userLoaded = decoded => {
   return {
     type: AUTH_USER_SUCCESS,
     payload: decoded
@@ -107,64 +107,56 @@ export const profileLoaded = (profile) => {
   }
 };
 
-export const registration = (username, email, password) => (dispatch) => {
+const setAuthUser = (dispatch, token) => {
+  const decoded = jwtDecode(token);
+  localStorage.setItem('jwtToken', token);
+  setAuthToken(token);
+  dispatch(userLoaded(decoded));
+  getAuthUser(token);
+};
+
+export const registration = (username, email, password) => async dispatch => {
   dispatch(userRequested());
 
-  authAPI.registration(username, email, password)
-      .then(res => {
-        if (res.status === 201) {
-          const { id_token } = res.data;
-          const decoded = jwtDecode(id_token);
-
-          localStorage.setItem('jwtToken', id_token);
-          setAuthToken(id_token);
-
-          dispatch(userLoaded(decoded));
-        }
-      })
+  const res = await authAPI.registration(username, email, password)
       .catch(err => {
         dispatch(stopSubmit('registration',
             {_error: err.response.data}
         ));
       });
-};
 
-export const login = (email, password) => (dispatch) => {
-  dispatch(userRequested());
-
-  authAPI.login(email, password)
-      .then(res => {
-        if (res.status === 201) {
-          const { id_token } = res.data;
-          const decoded = jwtDecode(id_token);
-
-          localStorage.setItem('jwtToken', id_token);
-          setAuthToken(id_token);
-          dispatch(userLoaded(decoded));
-
-          getAuthUser(id_token);
-        }
-      })
-      .catch(err => {
-        dispatch(stopSubmit("login",
-            {_error: err.response.data}
-        ));
-      })
-};
-
-export const getAuthUser = (token = localStorage.getItem('jwtToken')) => (dispatch) => {
-  if (token) {
-    dispatch(profileRequested());
-
-    userAPI.profile(token)
-        .then(res => {
-          dispatch(profileLoaded(res.data.user_info_token));
-        })
-        .catch(err => console.log(err.response))
+  if (res && res.status === 201) {
+    const {id_token} = res.data;
+    setAuthUser(dispatch, id_token);
   }
 };
 
-export const logout = () => (dispatch) => {
+export const login = (email, password) => async dispatch => {
+  dispatch(userRequested());
+
+  const res = await authAPI.login(email, password)
+      .catch((err) => {
+        dispatch(stopSubmit("login",
+            {_error: err.response.data}
+        ));
+      });
+
+  if (res && res.status === 201) {
+    const { id_token } = res.data;
+    setAuthUser(dispatch, id_token);
+  }
+};
+
+export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async dispatch => {
+  if (token) {
+    dispatch(profileRequested());
+
+    const res = await userAPI.profile(token);
+    dispatch(profileLoaded(res.data.user_info_token));
+  }
+};
+
+export const logout = () => dispatch => {
   localStorage.removeItem('jwtToken');
   setAuthToken(false);
   dispatch(userLoaded({}));

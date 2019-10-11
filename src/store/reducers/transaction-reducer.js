@@ -85,15 +85,6 @@ const transactionAddSuccess = (data) => {
   }
 };
 
-export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => (dispatch) => {
-  dispatch(transactionsRequested());
-  TransactionAPI.history(token)
-      .then(res => {
-            dispatch(transactionsLoaded(res.data.trans_token));
-          }
-      )
-};
-
 export const transactionFilter = (filter = 'all') => (dispatch) =>{
   dispatch({
     type: 'FILTER_TRANSACTION',
@@ -101,20 +92,25 @@ export const transactionFilter = (filter = 'all') => (dispatch) =>{
   })
 };
 
-export const newTransaction = ({name, amount}) => (dispatch) => {
+export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => async dispatch => {
+  dispatch(transactionsRequested());
+  const res = await TransactionAPI.history(token);
+  dispatch(transactionsLoaded(res.data.trans_token));
+};
+
+export const newTransaction = ({name, amount}) => async dispatch => {
   dispatch(transactionAddRequested());
-  TransactionAPI.add(name, amount)
-      .then(res => {
-        if (res.status === 200){
-          dispatch(transactionAddSuccess('Success'));
-          dispatch(getAuthUser())
-        }
-      })
+
+  const res = await TransactionAPI.add(name, amount)
       .catch(err => {
         dispatch(stopSubmit('addTransaction',
             {_error: err.response.data}
         ));
-      })
+      });
+  if (res && res.status === 200) {
+    dispatch(transactionAddSuccess('Success'));
+    dispatch(getAuthUser())
+  }
 };
 
 export default transactionReducer;
