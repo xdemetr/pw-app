@@ -7,6 +7,8 @@ const GET_TRANSACTIONS_SUCCESS = 'GET_TRANSACTIONS_SUCCESS';
 const ADD_TRANSACTION_REQUEST = 'ADD_TRANSACTION_REQUEST';
 const ADD_TRANSACTION_SUCCESS = 'ADD_TRANSACTION_SUCCESS';
 
+const FILTER_TRANSACTION = 'FILTER_TRANSACTION';
+
 let initialState = {
   list: null,
   loading: false,
@@ -47,7 +49,7 @@ const transactionReducer = (state = initialState, action) => {
       }
     }
 
-    case 'FILTER_TRANSACTION': {
+    case FILTER_TRANSACTION: {
       return {
         ...state,
         filter: action.payload
@@ -59,37 +61,37 @@ const transactionReducer = (state = initialState, action) => {
   }
 };
 
-const transactionsRequested = () => {
+export const transactionsRequested = () => {
   return {
     type: GET_TRANSACTIONS_REQUEST
   }
 };
 
-const transactionsLoaded = (transactions) => {
+export const transactionsLoaded = (transactions) => {
   return {
     type: GET_TRANSACTIONS_SUCCESS,
     payload: transactions
   }
 };
 
-const transactionAddRequested = () => {
+export const transactionAddRequested = () => {
   return {
     type: ADD_TRANSACTION_REQUEST
   }
 };
 
-const transactionAddSuccess = (data) => {
+export const transactionAddSuccess = (data) => {
   return {
     type: ADD_TRANSACTION_SUCCESS,
     payload: data
   }
 };
 
-export const transactionFilter = (filter = 'all') => (dispatch) =>{
-  dispatch({
-    type: 'FILTER_TRANSACTION',
+export const transactionFilter = (filter = 'all') => {
+  return {
+    type: FILTER_TRANSACTION,
     payload: filter
-  })
+  }
 };
 
 export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => async dispatch => {
