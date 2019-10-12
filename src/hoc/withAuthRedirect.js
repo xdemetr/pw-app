@@ -1,27 +1,23 @@
 import React from 'react';
-//import {Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Spinner from '../components/Spinner';
 import {getAuth} from '../store/selectors';
+import {getAuthUser} from '../store/reducers/auth-reducer';
 
 const withAuthRedirect = (Component) => {
   class RedirectComponent extends React.Component {
+
+    componentDidMount() {
+      this.props.getAuthUser()
+    }
+
     render() {
+      const {loading, isAuth} = this.props.auth;
 
-      const {loading} = this.props.auth;
+      if (!isAuth) return <Redirect to={`/login`}/>;
 
-      // if (isAuth) {
-      //   return <Redirect to={`/profile`}/>
-      // }
-
-      // TODO: fix redirect from reg page
-      // if (!isAuth) {
-      //   return <Redirect to={`/login`}/>
-      // }
-
-      if (loading) {
-        return <Spinner />
-      }
+      if (loading) return <Spinner />;
 
       return <Component {...this.props} />
     }
@@ -31,7 +27,7 @@ const withAuthRedirect = (Component) => {
     auth: getAuth(state)
   });
 
-  return connect(mapStateToProps)(RedirectComponent);
+  return connect(mapStateToProps, {getAuthUser})(RedirectComponent);
 
 };
 

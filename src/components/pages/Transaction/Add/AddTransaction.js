@@ -2,18 +2,14 @@ import React from 'react';
 import AddTransactionForm from './AddTransactionForm';
 import {connect} from 'react-redux';
 import {newTransaction} from '../../../../store/reducers/transaction-reducer';
-import {Redirect} from 'react-router-dom';
-import {getAuth} from '../../../../store/selectors';
+import {compose} from 'redux';
+import {withAuthRedirect} from '../../../../hoc';
 
 const AddTransaction = (props) => {
 
   const onSubmit = (formData) => {
     props.newTransaction(formData)
   };
-
-  if (!props.auth.isAuth) {
-    return <Redirect to={`/login`} />
-  }
 
   return (
       <div className="transaction-page col-md-7 m-auto">
@@ -25,10 +21,10 @@ const AddTransaction = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  auth: getAuth(state),
   transaction: state.transaction
 });
 
-export default connect(
-    mapStateToProps, {newTransaction}
+export default compose(
+    connect(mapStateToProps, {newTransaction}),
+    withAuthRedirect
 )(AddTransaction);

@@ -2,12 +2,13 @@ import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {Input} from '../../../Form/Input';
 import {email, required} from '../../../../utils/validators';
+import Error from '../../../Error';
 
 const LoginForm = (props) => {
 
-  //TODO:use stopSubmit in form
   return (
       <form onSubmit={props.handleSubmit}>
+        <Error message={props.error} />
         <Field
             validate={[required, email]}
             component={Input} placeholder="Email" name={"email"}/>

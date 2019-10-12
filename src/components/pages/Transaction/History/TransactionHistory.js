@@ -23,9 +23,6 @@ const TransactionHistory = (props) => {
   }
 
   return (
-      <div className="transaction-page">
-        <h1>Transaction history</h1>
-
         <table className="table">
           <thead>
           <tr>
@@ -40,7 +37,6 @@ const TransactionHistory = (props) => {
             {list}
           </tbody>
         </table>
-      </div>
   );
 };
 
