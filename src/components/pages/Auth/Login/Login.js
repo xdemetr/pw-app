@@ -5,6 +5,7 @@ import {login} from '../../../../store/reducers/auth-reducer';
 import {compose} from 'redux';
 import {Redirect} from 'react-router-dom';
 import {getAuth} from '../../../../store/selectors';
+import Spinner from '../../../Spinner';
 
 const Login = (props) => {
 
