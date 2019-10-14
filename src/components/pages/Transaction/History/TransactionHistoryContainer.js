@@ -13,22 +13,39 @@ class TransactionHistoryContainer extends React.Component {
     this.props.transactionsHistory();
   }
 
-  onClick = (filter) => {
+  onFilterChange = (filter) => {
     this.props.transactionFilter(filter);
   };
+
+  buttons = [
+    {name: 'all',label: 'All'},
+    {name: 'out',label: 'Outgoing payments'},
+    {name: 'in',label: 'Income payments'},
+  ];
 
   render() {
     if (!this.props.transaction) {
       return <Spinner/>;
     }
 
+    const buttons = this.buttons.map( ({name, label}) => {
+      const isActive = this.props.filter === name;
+      const classNames = isActive ? 'btn-info': 'btn-light';
+      return (
+          <span
+              key={name} className={`btn ${classNames}`}
+              onClick={() => this.onFilterChange(name)}
+          >
+            {label}
+          </span>
+      )
+    });
+
     return (
         <div className="transaction-page">
           <h1>Transaction history</h1>
           <div className="btn-group mb-4">
-            <span className="btn btn-info" onClick={() => this.onClick('all')}>All</span>
-            <span className="btn btn-light" onClick={() => this.onClick('out')}>Outgoing payments</span>
-            <span className="btn btn-light" onClick={() => this.onClick('in')}>Income payments</span>
+            {buttons}
           </div>
           <TransactionHistory list={this.props.transaction}/>
         </div>
@@ -37,7 +54,8 @@ class TransactionHistoryContainer extends React.Component {
 };
 
 const mapStateToProps = (state) => ({
-  transaction: getTransactions(state, state.transaction.filter)
+  transaction: getTransactions(state, state.transaction.filter),
+  filter: state.transaction.filter
 });
 
 export default compose(
