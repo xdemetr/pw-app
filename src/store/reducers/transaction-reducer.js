@@ -13,7 +13,7 @@ let initialState = {
   list: null,
   loading: false,
   message: null,
-  filter: null
+  filter: 'all'
 };
 
 const transactionReducer = (state = initialState, action) => {
