@@ -1,4 +1,4 @@
-import {TransactionAPI} from '../../api/PWApi';
+import {TransactionAPI, userAPI} from '../../api/PWApi';
 import {getAuthUser} from './auth-reducer';
 import {stopSubmit} from 'redux-form';
 
@@ -8,12 +8,15 @@ const ADD_TRANSACTION_REQUEST = 'ADD_TRANSACTION_REQUEST';
 const ADD_TRANSACTION_SUCCESS = 'ADD_TRANSACTION_SUCCESS';
 
 const FILTER_TRANSACTION = 'FILTER_TRANSACTION';
+const GET_RECEPIENT_REQUEST = 'GET_RECEPIENT_REQUEST';
+const GET_RECEPIENT_SUCCESS = 'GET_RECEPIENT_SUCCESS';
 
 let initialState = {
   list: null,
   loading: false,
   message: null,
-  filter: 'all'
+  filter: 'all',
+  recepients: [],
 };
 
 const transactionReducer = (state = initialState, action) => {
@@ -56,6 +59,19 @@ const transactionReducer = (state = initialState, action) => {
       }
     }
 
+    case GET_RECEPIENT_REQUEST: {
+      return {
+        ...state
+      }
+    }
+
+    case GET_RECEPIENT_SUCCESS: {
+      return {
+        ...state,
+        recepients: action.payload
+      }
+    }
+
     default:
       return state;
   }
@@ -92,6 +108,32 @@ export const transactionFilter = (filter = 'all') => {
     type: FILTER_TRANSACTION,
     payload: filter
   }
+};
+
+export const recepientsRequested = () => {
+  return {
+    type: GET_RECEPIENT_REQUEST,
+  }
+};
+
+export const recepientsSuccess = recepients => {
+  return {
+    type: GET_RECEPIENT_SUCCESS,
+    payload: recepients
+  }
+};
+
+export const onSuggestionsFetchRequested = (filter) => async dispatch => {
+  dispatch(recepientsRequested());
+
+  const res = await userAPI.filter(filter.value);
+  if (res.data.length > 0) {
+    dispatch(recepientsSuccess(res.data));
+  }
+};
+
+export const onSuggestionsClearRequested = () => dispatch => {
+  //dispatch(recepientsSuccess([]));
 };
 
 export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => async dispatch => {

@@ -1,18 +1,25 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {Input} from '../../../Form/Input';
+import {AutoInput, Input} from '../../../Form/Input';
 import {positiveNumber, required} from '../../../../utils/validators';
 import Error from '../../../Error';
 
-const AddTransactionForm = (props) => {
+const AddTransactionForm = ({handleSubmit, error, suggestions, onSuggestionsFetchRequested, onSuggestionsClearRequested}) => {
 
   return (
-      <form onSubmit={props.handleSubmit}>
-        <Error message={props.error} />
+      <form onSubmit={handleSubmit}>
+        <Error message={error} />
 
         <Field
+            name={'name'}
+            component={AutoInput}
+            placeholder={'Recipient name'}
+            autoComplete={"off"}
             validate={[required]}
-            component={Input} placeholder="Recipient name" name={"name"} autoComplete={"off"} />
+            onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            suggestions={suggestions}
+        />
 
         <Field
             validate={[required, positiveNumber]}

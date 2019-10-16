@@ -1,4 +1,5 @@
 import React from 'react';
+import AutoCompleteInput from './AutoCompleteInput';
 
 const FormControl = ({input, meta, child, element, ...props}) => {
   const hasError = meta.touched && meta.error;
@@ -24,6 +25,25 @@ const Input  = (props) => {
   )
 };
 
+const AutoInput  = (props) => {
+  const {input, meta, child, element, value, ...restProps} = props;
+
+  const hasError = meta.touched && meta.error;
+  const inputProps = {
+    className: `form-control ${hasError ? 'is-invalid' : ''}`,
+    value: input.value
+  };
+
+  return(
+      <FormControl {...props}>
+        <AutoCompleteInput
+            suggestions={props.suggestions}
+            {...input} {...inputProps} {...restProps} />
+      </FormControl>
+  )
+};
+
 export {
-  Input
+  Input,
+  AutoInput
 }

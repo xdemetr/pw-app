@@ -23,3 +23,7 @@ export const getTransactions = (state, filter) => {
       return  list
   }
 };
+
+export const getRecepients = (state) => {
+  return state.transaction.recepients
+};
