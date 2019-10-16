@@ -14,6 +14,9 @@ export const authAPI = {
 export const userAPI = {
   profile(){
     return axios.get(`api/protected/user-info`)
+  },
+  filter(filter){
+    return axios.post(`api/protected/users/list`, {filter})
   }
 };
 
