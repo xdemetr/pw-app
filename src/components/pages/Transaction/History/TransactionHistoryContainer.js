@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import TransactionHistory from './TransactionHistory';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../../../../hoc';
@@ -13,60 +13,61 @@ import {getAllTransactions, getTransactions} from '../../../../store/selectors';
 import Spinner from '../../../Spinner';
 import Paginator from '../../../Paginator/Paginator';
 
-class TransactionHistoryContainer extends React.PureComponent {
+const TransactionHistoryContainer = (
+    {
+      transactionsHistory, transactionFilter, filter, list,
+      setTransactionPaginatorCurrent, pageSize, paginatorCurrent, paginatorList
+    }
+) => {
 
-  componentDidMount() {
-    this.props.transactionsHistory();
-    this.props.setTransactionPaginatorList(this.props.paginatorList);
-  }
+  useEffect(() => {
+    transactionsHistory();
+  }, [transactionsHistory]);
 
-  onFilterChange = (filter) => {
-    this.props.transactionFilter(filter);
+  const onFilterChange = (filter) => {
+    transactionFilter(filter);
   };
 
-  buttons = [
-    {name: 'all',label: 'All'},
-    {name: 'out',label: 'Outgoing payments'},
-    {name: 'in',label: 'Income payments'},
+  const buttonsData = [
+    {name: 'all', label: 'All'},
+    {name: 'out', label: 'Outgoing payments'},
+    {name: 'in', label: 'Income payments'},
   ];
 
-  render() {
-    if (!this.props.paginatorList) {
-      return <Spinner/>;
-    }
-
-    const buttons = this.buttons.map( ({name, label}) => {
-      const isActive = this.props.filter === name;
-      const classNames = isActive ? 'btn-info': 'btn-light';
-      return (
-          <span
-              key={name} className={`btn ${classNames}`}
-              onClick={() => this.onFilterChange(name)}
-          >
+  const buttons = buttonsData.map( ({name, label}) => {
+    const isActive = filter === name;
+    const classNames = isActive ? 'btn-info': 'btn-light';
+    return (
+        <span
+            key={name} className={`btn ${classNames}`}
+            onClick={() => onFilterChange(name)}
+        >
             {label}
           </span>
-      )
-    });
+    )
+  });
 
-    return (
-        <div className="transaction-page">
-          <h1>Transaction history</h1>
-
-          <div className="mb-4 d-flex align-items-center">
-            <Paginator
-                totalItemsCount={this.props.list.length}
-                pageSize={this.props.pageSize}
-                currentPage={this.props.paginatorCurrent}
-                onPageChanged={this.props.setTransactionPaginatorCurrent}
-            />
-            <div className="btn-group ml-auto">{buttons}</div>
-          </div>
-
-          <TransactionHistory list={this.props.paginatorList}/>
-        </div>
-    );
+  if (!paginatorList) {
+    return <Spinner/>;
   }
-}
+
+  return (
+      <div className="transaction-page">
+        <h1>Transaction history</h1>
+
+        <div className="mb-4 d-flex align-items-center">
+          <Paginator
+              totalItemsCount={list.length}
+              pageSize={pageSize}
+              currentPage={paginatorCurrent}
+              onPageChanged={setTransactionPaginatorCurrent}
+          />
+          <div className="btn-group ml-auto">{buttons}</div>
+        </div>
+
+        <TransactionHistory list={paginatorList}/>
+      </div>)
+};
 
 const mapStateToProps = (state) => ({
   list: getAllTransactions(state, state.transaction.filter),
@@ -84,4 +85,4 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withAuthRedirect
-)(TransactionHistoryContainer);
+)(React.memo(TransactionHistoryContainer));
