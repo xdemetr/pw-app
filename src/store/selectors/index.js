@@ -6,7 +6,7 @@ export const getProfile = (state) => {
   return state.auth.profile
 };
 
-export const getTransactions = (state, filter) => {
+export const getAllTransactions = (state, filter) => {
   let list = state.transaction.list;
   if (!list) return null;
 
@@ -22,6 +22,17 @@ export const getTransactions = (state, filter) => {
     default:
       return  list
   }
+};
+
+export const getTransactions = (state) => {
+  const pageCurrent = state.transaction.paginatorCurrent;
+  const pageSize = state.transaction.paginatorSize;
+  let list = state.transaction.list;
+
+  if (!list) return null;
+  list = getAllTransactions(state, state.transaction.filter);
+
+  return list.slice(pageSize * pageCurrent - pageSize, pageSize * pageCurrent);
 };
 
 export const getRecepients = (state) => {

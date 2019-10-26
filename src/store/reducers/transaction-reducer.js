@@ -11,12 +11,18 @@ const FILTER_TRANSACTION = 'FILTER_TRANSACTION';
 const GET_RECEPIENT_REQUEST = 'GET_RECEPIENT_REQUEST';
 const GET_RECEPIENT_SUCCESS = 'GET_RECEPIENT_SUCCESS';
 
+const SET_TRANSACTION_PAGINATOR_LIST = 'SET_TRANSACTION_PAGINATOR_LIST';
+const SET_TRANSACTION_PAGINATOR_CURRENT = 'SET_TRANSACTION_PAGINATOR_CURRENT';
+
 let initialState = {
   list: null,
   loading: false,
   message: null,
   filter: 'all',
   recepients: [],
+  paginatorList: null,
+  paginatorSize: 10,
+  paginatorCurrent: 1
 };
 
 const transactionReducer = (state = initialState, action) => {
@@ -55,7 +61,8 @@ const transactionReducer = (state = initialState, action) => {
     case FILTER_TRANSACTION: {
       return {
         ...state,
-        filter: action.payload
+        filter: action.payload,
+        paginatorCurrent: 1
       }
     }
 
@@ -69,6 +76,20 @@ const transactionReducer = (state = initialState, action) => {
       return {
         ...state,
         recepients: action.payload
+      }
+    }
+
+    case SET_TRANSACTION_PAGINATOR_LIST: {
+      return {
+        ...state,
+        paginatorList: action.payload
+      }
+    }
+
+    case SET_TRANSACTION_PAGINATOR_CURRENT: {
+      return {
+        ...state,
+        paginatorCurrent: action.payload
       }
     }
 
@@ -154,6 +175,20 @@ export const newTransaction = ({name, amount}) => async dispatch => {
   if (res && res.status === 200) {
     dispatch(transactionAddSuccess('Success'));
     dispatch(getAuthUser())
+  }
+};
+
+export const setTransactionPaginatorList = list => {
+  return {
+    type : SET_TRANSACTION_PAGINATOR_LIST,
+    payload: list
+  }
+};
+
+export const setTransactionPaginatorCurrent = current => {
+  return {
+    type : SET_TRANSACTION_PAGINATOR_CURRENT,
+    payload: current
   }
 };
 
