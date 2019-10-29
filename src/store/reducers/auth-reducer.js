@@ -156,7 +156,7 @@ export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async d
   }
 };
 
-export const logout = () => dispatch => {
+export const logoutUser = () => dispatch => {
   localStorage.removeItem('jwtToken');
   setAuthToken(false);
   dispatch(userLoaded({}));

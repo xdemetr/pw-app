@@ -8,7 +8,7 @@ import {withSuspense} from '../../hoc';
 const ProfileContainer = React.lazy(() => import('../pages/Profile/ProfileContainer'));
 const TransactionHistoryContainer = React.lazy(() => import('../pages/Transaction/History/TransactionHistoryContainer'));
 
-const App = () => {
+const App: React.FC = () => {
   return (
       <div className="app">
         <AppHeader/>
