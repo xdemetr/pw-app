@@ -1,8 +1,10 @@
 import React from 'react';
+import ITransactionItem from '../../../../models/ITransactionItem';
 
-const TransactionHistory = (props) => {
+const TransactionHistory:React.FC<{list: Array<ITransactionItem>}> = ({list}) => {
+  let listResult;
 
-  let list = props.list.map( ({id, date, username, amount, balance}) => {
+  listResult = list.map( ({id, date, username, amount, balance}) => {
     return(
         <tr className={amount < 0 ? 'table-danger': 'table-success'} key={id}>
           <td>{id}</td>
@@ -14,10 +16,10 @@ const TransactionHistory = (props) => {
     )
   });
 
-  if (list.length === 0) {
-    list = (
+  if (!listResult.length) {
+    listResult = (
         <tr>
-          <td colSpan="5" className="text-center table-info">Your history is empty.</td>
+          <td colSpan={5} className="text-center table-info">Your history is empty.</td>
         </tr>
     )
   }
@@ -34,7 +36,7 @@ const TransactionHistory = (props) => {
           </tr>
           </thead>
           <tbody>
-            {list}
+            {listResult}
           </tbody>
         </table>
   );
