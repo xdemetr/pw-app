@@ -3,6 +3,7 @@ import jwtDecode from 'jwt-decode';
 import setAuthToken from '../../utils/set-auth-token';
 import {stopSubmit} from 'redux-form';
 import ITokenJWT from '../../models/ITokenJWT';
+import {Reducer} from 'redux';
 
 const AUTH_USER_REQUEST = 'AUTH_USER_REQUEST';
 const AUTH_USER_SUCCESS = 'AUTH_USER_SUCCESS';
@@ -31,7 +32,7 @@ interface IProfile {
   balance: number
 }
 
-const authReducer = (state = initialState, action:baseAction) => {
+const authReducer:Reducer<any> = (state = initialState, action:baseAction) => {
   switch (action.type) {
     case AUTH_USER_REQUEST: {
       return {
@@ -87,32 +88,32 @@ const authReducer = (state = initialState, action:baseAction) => {
   }
 };
 
-const userRequested = () => {
+const userRequested = ():baseAction => {
   return {
     type: AUTH_USER_REQUEST
   }
 };
 
-export const userLoaded = (decoded:ITokenJWT) => {
+export const userLoaded = (decoded:ITokenJWT):baseAction => {
   return {
     type: AUTH_USER_SUCCESS,
     payload: decoded
   }
 };
 
-export const userLogout = () => {
+export const userLogout = ():baseAction => {
   return {
     type: LOGOUT_USER
   }
 };
 
-const profileRequested = () => {
+const profileRequested = ():baseAction => {
   return {
     type: GET_PROFILE_REQUEST
   }
 };
 
-export const profileLoaded = (profile:IProfile) => {
+export const profileLoaded = (profile:IProfile):baseAction => {
   return {
     type: GET_PROFILE_SUCCESS,
     payload: profile
@@ -163,7 +164,7 @@ export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async (
   if (token) {
     dispatch(profileRequested());
 
-    const res = await userAPI.profile(token);
+    const res = await userAPI.profile();
     dispatch(profileLoaded(res.data.user_info_token));
   }
 };

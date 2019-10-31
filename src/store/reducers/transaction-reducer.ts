@@ -32,12 +32,12 @@ interface ITransactions {
 
 interface baseAction {
   type: string,
-  payload?: Array<ITransactionItem> | string
+  payload?: any
 }
 
 interface ITransactionAdd {
   name: string,
-  amount: number
+  amount: string
 }
 
 const transactionReducer = (state = initialState, action: baseAction) => {
@@ -113,50 +113,64 @@ const transactionReducer = (state = initialState, action: baseAction) => {
   }
 };
 
-export const transactionsRequested = () => {
+export const transactionsRequested = ():baseAction => {
   return {
     type: GET_TRANSACTIONS_REQUEST
   }
 };
 
-export const transactionsLoaded = (transactions: ITransactions) => {
+export const transactionsLoaded = (transactions: ITransactions):baseAction => {
   return {
     type: GET_TRANSACTIONS_SUCCESS,
     payload: transactions
   }
 };
 
-export const transactionAddRequested = () => {
+export const transactionAddRequested = ():baseAction => {
   return {
     type: ADD_TRANSACTION_REQUEST
   }
 };
 
-export const transactionAddSuccess = (data: ITransactionItem | string) => {
+export const transactionAddSuccess = (data: ITransactionItem | string):baseAction => {
   return {
     type: ADD_TRANSACTION_SUCCESS,
     payload: data
   }
 };
 
-export const transactionFilter = (filter: string) => {
+export const transactionFilter = (filter: string):baseAction => {
   return {
     type: FILTER_TRANSACTION,
     payload: filter
   }
 };
 
-export const recepientsRequested = () => {
+export const recepientsRequested = ():baseAction => {
   return {
     type: GET_RECEPIENT_REQUEST,
   }
 };
 //export const recepientsSuccess = (recepients: Array<ITransactionItem>) => {
 
-export const recepientsSuccess = (recepients:any) => {
+export const recepientsSuccess = (recepients:any):baseAction => {
   return {
     type: GET_RECEPIENT_SUCCESS,
     payload: recepients
+  }
+};
+
+export const setTransactionPaginatorList = (list:Array<ITransactionItem>):baseAction => {
+  return {
+    type : SET_TRANSACTION_PAGINATOR_LIST,
+    payload: list
+  }
+};
+
+export const setTransactionPaginatorCurrent = (current:number):baseAction => {
+  return {
+    type : SET_TRANSACTION_PAGINATOR_CURRENT,
+    payload: current
   }
 };
 
@@ -175,7 +189,7 @@ export const onSuggestionsClearRequested = () => {
 
 export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => async (dispatch:any) => {
   dispatch(transactionsRequested());
-  const res = await TransactionAPI.history(token);
+  const res = await TransactionAPI.history();
   dispatch(transactionsLoaded(res.data.trans_token));
 };
 
@@ -193,20 +207,6 @@ export const newTransaction = (data:ITransactionAdd) => async (dispatch:any) => 
   if (res && res.status === 200) {
     dispatch(transactionAddSuccess('Success'));
     dispatch(getAuthUser())
-  }
-};
-
-export const setTransactionPaginatorList = (list:Array<ITransactionItem>) => {
-  return {
-    type : SET_TRANSACTION_PAGINATOR_LIST,
-    payload: list
-  }
-};
-
-export const setTransactionPaginatorCurrent = (current:number) => {
-  return {
-    type : SET_TRANSACTION_PAGINATOR_CURRENT,
-    payload: current
   }
 };
 

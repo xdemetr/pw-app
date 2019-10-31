@@ -3,28 +3,28 @@ import axios from 'axios';
 axios.defaults.baseURL = 'http://193.124.114.46:3001/';
 
 export const authAPI = {
-  registration(username, email, password){
+  registration(username:string, email:string, password:string){
     return axios.post(`users`, {username, email, password})
   },
-  login(email, password){
+  login(email:string, password:string){
     return axios.post(`sessions/create`, {email, password})
   }
 };
 
 export const userAPI = {
-  profile(token){
-    return axios.get(`api/protected/user-info`, token)
+  profile(){
+    return axios.get(`api/protected/user-info`)
   },
-  filter(filter){
+  filter(filter:string){
     return axios.post(`api/protected/users/list`, {filter})
   }
 };
 
 export const TransactionAPI = {
-  history(token){
-    return axios.get(`api/protected/transactions`, token)
+  history(){
+    return axios.get(`api/protected/transactions`, )
   },
-  add(name, amount){
+  add(name:string, amount:string){
     return axios.post(`api/protected/transactions`, {name, amount})
   }
 };
