@@ -12,8 +12,8 @@ export const authAPI = {
 };
 
 export const userAPI = {
-  profile(){
-    return axios.get(`api/protected/user-info`)
+  profile(token){
+    return axios.get(`api/protected/user-info`, token)
   },
   filter(filter){
     return axios.post(`api/protected/users/list`, {filter})
@@ -21,8 +21,8 @@ export const userAPI = {
 };
 
 export const TransactionAPI = {
-  history(){
-    return axios.get(`api/protected/transactions`)
+  history(token){
+    return axios.get(`api/protected/transactions`, token)
   },
   add(name, amount){
     return axios.post(`api/protected/transactions`, {name, amount})

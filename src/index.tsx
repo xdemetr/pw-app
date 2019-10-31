@@ -14,8 +14,6 @@ if (localStorage.jwtToken) {
 
   const decoded = JwtDecode<ITokenJWT>(localStorage.jwtToken);
 
-  console.log(decoded);
-
   store.dispatch(userLoaded(decoded));
 
   const currentTime = Date.now() / 1000;

@@ -1,6 +1,7 @@
 import {TransactionAPI, userAPI} from '../../api/PWApi';
 import {getAuthUser} from './auth-reducer';
 import {stopSubmit} from 'redux-form';
+import ITransactionItem from '../../models/ITransactionItem';
 
 const GET_TRANSACTIONS_REQUEST = 'GET_TRANSACTIONS_REQUEST';
 const GET_TRANSACTIONS_SUCCESS = 'GET_TRANSACTIONS_SUCCESS';
@@ -25,7 +26,21 @@ let initialState = {
   paginatorCurrent: 1
 };
 
-const transactionReducer = (state = initialState, action) => {
+interface ITransactions {
+  list: Array<ITransactionItem>
+}
+
+interface baseAction {
+  type: string,
+  payload?: Array<ITransactionItem> | string
+}
+
+interface ITransactionAdd {
+  name: string,
+  amount: number
+}
+
+const transactionReducer = (state = initialState, action: baseAction) => {
   switch (action.type) {
 
     case GET_TRANSACTIONS_REQUEST: {
@@ -104,7 +119,7 @@ export const transactionsRequested = () => {
   }
 };
 
-export const transactionsLoaded = (transactions) => {
+export const transactionsLoaded = (transactions: ITransactions) => {
   return {
     type: GET_TRANSACTIONS_SUCCESS,
     payload: transactions
@@ -117,14 +132,14 @@ export const transactionAddRequested = () => {
   }
 };
 
-export const transactionAddSuccess = (data) => {
+export const transactionAddSuccess = (data: ITransactionItem | string) => {
   return {
     type: ADD_TRANSACTION_SUCCESS,
     payload: data
   }
 };
 
-export const transactionFilter = (filter = 'all') => {
+export const transactionFilter = (filter: string) => {
   return {
     type: FILTER_TRANSACTION,
     payload: filter
@@ -136,15 +151,16 @@ export const recepientsRequested = () => {
     type: GET_RECEPIENT_REQUEST,
   }
 };
+//export const recepientsSuccess = (recepients: Array<ITransactionItem>) => {
 
-export const recepientsSuccess = recepients => {
+export const recepientsSuccess = (recepients:any) => {
   return {
     type: GET_RECEPIENT_SUCCESS,
     payload: recepients
   }
 };
 
-export const onSuggestionsFetchRequested = (filter) => async dispatch => {
+export const onSuggestionsFetchRequested = (filter:any) => async (dispatch:any) => {
   dispatch(recepientsRequested());
 
   const res = await userAPI.filter(filter.value);
@@ -153,21 +169,23 @@ export const onSuggestionsFetchRequested = (filter) => async dispatch => {
   }
 };
 
-export const onSuggestionsClearRequested = () => dispatch => {
+export const onSuggestionsClearRequested = () => {
   //dispatch(recepientsSuccess([]));
 };
 
-export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => async dispatch => {
+export const transactionsHistory = (token = localStorage.getItem('jwtToken')) => async (dispatch:any) => {
   dispatch(transactionsRequested());
   const res = await TransactionAPI.history(token);
   dispatch(transactionsLoaded(res.data.trans_token));
 };
 
-export const newTransaction = ({name, amount}) => async dispatch => {
+export const newTransaction = (data:ITransactionAdd) => async (dispatch:any) => {
   dispatch(transactionAddRequested());
 
+  const {name, amount} = data;
+
   const res = await TransactionAPI.add(name, amount)
-      .catch(err => {
+      .catch((err:any) => {
         dispatch(stopSubmit('addTransaction',
             {_error: err.response.data}
         ));
@@ -178,14 +196,14 @@ export const newTransaction = ({name, amount}) => async dispatch => {
   }
 };
 
-export const setTransactionPaginatorList = list => {
+export const setTransactionPaginatorList = (list:Array<ITransactionItem>) => {
   return {
     type : SET_TRANSACTION_PAGINATOR_LIST,
     payload: list
   }
 };
 
-export const setTransactionPaginatorCurrent = current => {
+export const setTransactionPaginatorCurrent = (current:number) => {
   return {
     type : SET_TRANSACTION_PAGINATOR_CURRENT,
     payload: current

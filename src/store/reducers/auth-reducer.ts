@@ -2,6 +2,7 @@ import {authAPI, userAPI} from '../../api/PWApi';
 import jwtDecode from 'jwt-decode';
 import setAuthToken from '../../utils/set-auth-token';
 import {stopSubmit} from 'redux-form';
+import ITokenJWT from '../../models/ITokenJWT';
 
 const AUTH_USER_REQUEST = 'AUTH_USER_REQUEST';
 const AUTH_USER_SUCCESS = 'AUTH_USER_SUCCESS';
@@ -19,7 +20,18 @@ let initialState = {
   loading: false,
 };
 
-const authReducer = (state = initialState, action) => {
+interface baseAction {
+  type: string,
+  payload?: any
+}
+
+interface IProfile {
+  name: string,
+  id: number,
+  balance: number
+}
+
+const authReducer = (state = initialState, action:baseAction) => {
   switch (action.type) {
     case AUTH_USER_REQUEST: {
       return {
@@ -81,7 +93,7 @@ const userRequested = () => {
   }
 };
 
-export const userLoaded = decoded => {
+export const userLoaded = (decoded:ITokenJWT) => {
   return {
     type: AUTH_USER_SUCCESS,
     payload: decoded
@@ -100,26 +112,26 @@ const profileRequested = () => {
   }
 };
 
-export const profileLoaded = (profile) => {
+export const profileLoaded = (profile:IProfile) => {
   return {
     type: GET_PROFILE_SUCCESS,
     payload: profile
   }
 };
 
-const setAuthUser = (dispatch, token) => {
-  const decoded = jwtDecode(token);
+const setAuthUser = (dispatch:any, token:string) => {
+  const decoded = jwtDecode<ITokenJWT>(token);
   localStorage.setItem('jwtToken', token);
   setAuthToken(token);
   dispatch(userLoaded(decoded));
   getAuthUser(token);
 };
 
-export const registration = (username, email, password) => async dispatch => {
+export const registration = (username:string, email:string, password:string) => async (dispatch:any) => {
   dispatch(userRequested());
 
   const res = await authAPI.registration(username, email, password)
-      .catch(err => {
+      .catch((err:any) => {
         dispatch(stopSubmit('registration',
             {_error: err.response.data}
         ));
@@ -131,11 +143,11 @@ export const registration = (username, email, password) => async dispatch => {
   }
 };
 
-export const login = (email, password) => async dispatch => {
+export const login = (email:string, password:string) => async (dispatch:any) => {
   dispatch(userRequested());
 
   const res = await authAPI.login(email, password)
-      .catch((err) => {
+      .catch((err:any) => {
         dispatch(stopSubmit("login",
             {_error: err.response.data}
         ));
@@ -147,7 +159,7 @@ export const login = (email, password) => async dispatch => {
   }
 };
 
-export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async dispatch => {
+export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async (dispatch:any) => {
   if (token) {
     dispatch(profileRequested());
 
@@ -156,10 +168,9 @@ export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async d
   }
 };
 
-export const logoutUser = () => dispatch => {
+export const logoutUser = () => (dispatch:any) => {
   localStorage.removeItem('jwtToken');
   setAuthToken(false);
-  dispatch(userLoaded({}));
   dispatch(userLogout());
 };
 

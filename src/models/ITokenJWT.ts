@@ -1,8 +1,8 @@
 export default interface ITokenJWT {
-  id: number,
-  username: string,
-  jwtToken: string,
+  id?: number,
+  username?: string,
+  email?: string,
   exp: number,
-  iat: number,
-  balance: number
+  iat?: number,
+  balance?: number
 }
