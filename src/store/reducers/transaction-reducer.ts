@@ -14,22 +14,22 @@ import {
 import IRecepient from '../../types/IRecepient';
 
 interface transactionReducerState {
-  list: ITransactionItem[],
+  list: ITransactionItem[] | null,
   loading: boolean,
   message?: string | null,
   filter: string,
-  recepients: IRecepient[],
+  recepients: IRecepient[] | null,
   paginatorList: ITransactionItem[],
   paginatorSize: number,
   paginatorCurrent: number
 }
 
 const transactionReducerDefaultState:transactionReducerState = {
-  list: [],
+  list: null,
   loading: false,
   message: null,
   filter: 'all',
-  recepients: [],
+  recepients: null,
   paginatorList: [],
   paginatorCurrent: 1,
   paginatorSize: 10

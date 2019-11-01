@@ -1,7 +1,7 @@
 import React from 'react';
 import ITransactionItem from '../../../../types/ITransactionItem';
 
-const TransactionHistory:React.FC<{list: Array<ITransactionItem>}> = ({list}) => {
+const TransactionHistory:React.FC<{list: ITransactionItem[]}> = ({list}) => {
   let listResult;
 
   listResult = list.map( ({id, date, username, amount, balance}) => {
