@@ -1,12 +1,12 @@
-import React from 'react';
+import * as React from 'react'
 import './App.css';
 import {Route} from 'react-router-dom';
 import AppHeader from '../AppHeader';
 import {Login, Registration, AddTransaction} from '../pages';
 import {withSuspense} from '../../hoc';
 
-const ProfileContainer = React.lazy(() => import('../pages/Profile/ProfileContainer'));
-const TransactionHistoryContainer = React.lazy(() => import('../pages/Transaction/History/TransactionHistoryContainer'));
+const ProfileContainer = React.lazy(():any => import('../pages/Profile/ProfileContainer'));
+const TransactionHistoryContainer = React.lazy(():any => import('../pages/Transaction/History/TransactionHistoryContainer'));
 
 const App: React.FC = () => {
   return (

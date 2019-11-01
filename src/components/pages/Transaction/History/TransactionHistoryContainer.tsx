@@ -1,14 +1,9 @@
-import React,{useEffect} from 'react';
+//import React, {useEffect} from 'react';
+import * as React from 'react'
 import TransactionHistory from './TransactionHistory';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../../../../hoc';
 import {connect} from 'react-redux';
-// import {
-//   setTransactionPaginatorCurrent,
-//   setTransactionPaginatorList,
-//   transactionFilter,
-//   transactionsHistory
-// } from '../../../../store/reducers/transaction-reducer';
 import {getAllTransactions, getTransactions} from '../../../../store/selectors';
 import Spinner from '../../../Spinner';
 import Paginator from '../../../Paginator/Paginator';
@@ -18,19 +13,31 @@ import {
   transactionFilter,
   transactionsHistory
 } from '../../../../store/actions/transaction';
+import ITransactionItem from '../../../../types/ITransactionItem';
 
-const TransactionHistoryContainer = (
+interface Props {
+  transactionsHistory: () => void,
+  transactionFilter: (filter:string) => void,
+  filter: string,
+  list: ITransactionItem[],
+  setTransactionPaginatorCurrent: () => void,
+  pageSize: number,
+  paginatorCurrent: number,
+  paginatorList: ITransactionItem[]
+}
+
+const TransactionHistoryContainer:React.FC<Props> = (
     {
       transactionsHistory, transactionFilter, filter, list,
       setTransactionPaginatorCurrent, pageSize, paginatorCurrent, paginatorList
     }
 ) => {
 
-  useEffect(() => {
+  React.useEffect(() => {
     transactionsHistory();
   }, [transactionsHistory]);
 
-  const onFilterChange = (filter) => {
+  const onFilterChange = (filter:string) => {
     transactionFilter(filter);
   };
 
@@ -75,7 +82,7 @@ const TransactionHistoryContainer = (
       </div>)
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state:any) => ({
   list: getAllTransactions(state, state.transaction.filter),
   filter: state.transaction.filter,
   pageSize: state.transaction.paginatorSize,
