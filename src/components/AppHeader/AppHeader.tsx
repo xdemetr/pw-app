@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {logoutUser} from '../../store/reducers/auth-reducer';
 import s from './AppHeader.module.css';
 import {getAuth} from '../../store/selectors';
 import IAppHeader from '../../models/IAppHeader';
+import {logoutUser} from '../../store/actions/auth';
 
 const AppHeader: React.FC<IAppHeader> = (
     {auth: {profile, isAuth}, logoutUser}

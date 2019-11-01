@@ -6,8 +6,8 @@ import store from './store/store';
 import {BrowserRouter} from 'react-router-dom';
 import setAuthToken from './utils/set-auth-token';
 import JwtDecode from 'jwt-decode';
-import {logoutUser, userLoaded} from './store/reducers/auth-reducer';
-import ITokenJWT from './models/ITokenJWT';
+import ITokenJWT from './types/ITokenJWT';
+import { logoutUser, userLoaded } from './store/actions/auth';
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);

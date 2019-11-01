@@ -1,5 +1,5 @@
 import React from 'react';
-import ITransactionItem from '../../../../models/ITransactionItem';
+import ITransactionItem from '../../../../types/ITransactionItem';
 
 const TransactionHistory:React.FC<{list: Array<ITransactionItem>}> = ({list}) => {
   let listResult;

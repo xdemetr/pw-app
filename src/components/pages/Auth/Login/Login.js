@@ -1,10 +1,10 @@
 import React from 'react';
 import LoginForm from './LoginForm';
 import {connect} from 'react-redux';
-import {login} from '../../../../store/reducers/auth-reducer';
 import {compose} from 'redux';
 import {Redirect} from 'react-router-dom';
 import {getAuth} from '../../../../store/selectors';
+import {login} from '../../../../store/actions/auth';
 
 const Login = (props) => {
 

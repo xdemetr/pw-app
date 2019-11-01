@@ -12,7 +12,7 @@ export const authAPI = {
 };
 
 export const userAPI = {
-  profile(){
+  profile(token:string){
     return axios.get(`api/protected/user-info`)
   },
   filter(filter:string){

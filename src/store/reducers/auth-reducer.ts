@@ -1,9 +1,4 @@
-import {authAPI, userAPI} from '../../api/PWApi';
-import jwtDecode from 'jwt-decode';
-import setAuthToken from '../../utils/set-auth-token';
-import {stopSubmit} from 'redux-form';
-import ITokenJWT from '../../models/ITokenJWT';
-import {Reducer} from 'redux';
+import {AuthActionTypes} from '../../types/authActions';
 
 const AUTH_USER_REQUEST = 'AUTH_USER_REQUEST';
 const AUTH_USER_SUCCESS = 'AUTH_USER_SUCCESS';
@@ -13,26 +8,27 @@ const LOGOUT_USER = 'LOGOUT_USER';
 const GET_PROFILE_REQUEST = 'GET_PROFILE_REQUEST';
 const GET_PROFILE_SUCCESS = 'GET_PROFILE_SUCCESS';
 
+interface authReducerState {
+  isAuth: boolean,
+  user: Object,
+  profile: {},
+  loading: boolean,
+  error: string
+}
 
-let initialState = {
+const authReducerDefaultState:authReducerState = {
   isAuth: false,
   user: {},
   profile: {},
   loading: false,
+  error: ''
 };
 
-interface baseAction {
-  type: string,
-  payload?: any
-}
+const authReducer = (
+    state = authReducerDefaultState,
+    action:AuthActionTypes
+):authReducerState => {
 
-interface IProfile {
-  name: string,
-  id: number,
-  balance: number
-}
-
-const authReducer:Reducer<any> = (state = initialState, action:baseAction) => {
   switch (action.type) {
     case AUTH_USER_REQUEST: {
       return {
@@ -44,16 +40,16 @@ const authReducer:Reducer<any> = (state = initialState, action:baseAction) => {
     case AUTH_USER_SUCCESS: {
       return {
         ...state,
-        user: action.payload,
+        user: action.auth,
         isAuth: true,
         loading: false
-      };
+      }
     }
 
     case AUTH_USER_FAILURE: {
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         loading: false
       }
     }
@@ -78,7 +74,7 @@ const authReducer:Reducer<any> = (state = initialState, action:baseAction) => {
     case GET_PROFILE_SUCCESS: {
       return {
         ...state,
-        profile: action.payload,
+        profile: action.profile,
         loading: false
       }
     }
@@ -86,93 +82,6 @@ const authReducer:Reducer<any> = (state = initialState, action:baseAction) => {
     default:
       return state;
   }
-};
-
-const userRequested = ():baseAction => {
-  return {
-    type: AUTH_USER_REQUEST
-  }
-};
-
-export const userLoaded = (decoded:ITokenJWT):baseAction => {
-  return {
-    type: AUTH_USER_SUCCESS,
-    payload: decoded
-  }
-};
-
-export const userLogout = ():baseAction => {
-  return {
-    type: LOGOUT_USER
-  }
-};
-
-const profileRequested = ():baseAction => {
-  return {
-    type: GET_PROFILE_REQUEST
-  }
-};
-
-export const profileLoaded = (profile:IProfile):baseAction => {
-  return {
-    type: GET_PROFILE_SUCCESS,
-    payload: profile
-  }
-};
-
-const setAuthUser = (dispatch:any, token:string) => {
-  const decoded = jwtDecode<ITokenJWT>(token);
-  localStorage.setItem('jwtToken', token);
-  setAuthToken(token);
-  dispatch(userLoaded(decoded));
-  getAuthUser(token);
-};
-
-export const registration = (username:string, email:string, password:string) => async (dispatch:any) => {
-  dispatch(userRequested());
-
-  const res = await authAPI.registration(username, email, password)
-      .catch((err:any) => {
-        dispatch(stopSubmit('registration',
-            {_error: err.response.data}
-        ));
-      });
-
-  if (res && res.status === 201) {
-    const {id_token} = res.data;
-    setAuthUser(dispatch, id_token);
-  }
-};
-
-export const login = (email:string, password:string) => async (dispatch:any) => {
-  dispatch(userRequested());
-
-  const res = await authAPI.login(email, password)
-      .catch((err:any) => {
-        dispatch(stopSubmit("login",
-            {_error: err.response.data}
-        ));
-      });
-
-  if (res && res.status === 201) {
-    const { id_token } = res.data;
-    setAuthUser(dispatch, id_token);
-  }
-};
-
-export const getAuthUser = (token = localStorage.getItem('jwtToken')) => async (dispatch:any) => {
-  if (token) {
-    dispatch(profileRequested());
-
-    const res = await userAPI.profile();
-    dispatch(profileLoaded(res.data.user_info_token));
-  }
-};
-
-export const logoutUser = () => (dispatch:any) => {
-  localStorage.removeItem('jwtToken');
-  setAuthToken(false);
-  dispatch(userLogout());
 };
 
 export default authReducer;

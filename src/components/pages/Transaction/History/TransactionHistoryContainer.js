@@ -3,15 +3,21 @@ import TransactionHistory from './TransactionHistory';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../../../../hoc';
 import {connect} from 'react-redux';
+// import {
+//   setTransactionPaginatorCurrent,
+//   setTransactionPaginatorList,
+//   transactionFilter,
+//   transactionsHistory
+// } from '../../../../store/reducers/transaction-reducer';
+import {getAllTransactions, getTransactions} from '../../../../store/selectors';
+import Spinner from '../../../Spinner';
+import Paginator from '../../../Paginator/Paginator';
 import {
   setTransactionPaginatorCurrent,
   setTransactionPaginatorList,
   transactionFilter,
   transactionsHistory
-} from '../../../../store/reducers/transaction-reducer';
-import {getAllTransactions, getTransactions} from '../../../../store/selectors';
-import Spinner from '../../../Spinner';
-import Paginator from '../../../Paginator/Paginator';
+} from '../../../../store/actions/transaction';
 
 const TransactionHistoryContainer = (
     {
