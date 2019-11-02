@@ -88,7 +88,7 @@ export const newTransaction = (data:{name: string, amount: string}) => async (di
         ));
       });
   if (res && res.status === 200) {
-    dispatch(transactionAddSuccess(res.data));
+    dispatch(transactionAddSuccess(res.data.trans_token));
   }
 };
 
