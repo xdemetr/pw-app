@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Spinner from '../components/Spinner';
 import {getAuth} from '../store/selectors';
-import {getAuthUser} from '../store/reducers/auth-reducer';
+import {getAuthUser} from '../store/actions/auth';
 
 const withAuthRedirect = (Component) => {
   class RedirectComponent extends React.Component {

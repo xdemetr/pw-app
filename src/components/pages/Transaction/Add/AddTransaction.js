@@ -1,10 +1,14 @@
 import React from 'react';
 import AddTransactionForm from './AddTransactionForm';
 import {connect} from 'react-redux';
-import {newTransaction, onSuggestionsClearRequested, onSuggestionsFetchRequested} from '../../../../store/reducers/transaction-reducer';
 import {compose} from 'redux';
 import {withAuthRedirect} from '../../../../hoc';
 import {getRecepients} from '../../../../store/selectors';
+import {
+  newTransaction,
+  onSuggestionsClearRequested,
+  onSuggestionsFetchRequested
+} from '../../../../store/actions/transaction';
 
 const AddTransaction = ({suggestions, onSuggestionsFetchRequested, onSuggestionsClearRequested, newTransaction}) => {
 

@@ -1,7 +1,16 @@
-import React from 'react';
+import * as React from 'react'
 
-const Profile = (props) => {
-  const {name, id, balance, email} = props.profile;
+interface IProfile {
+  profile: {
+    name: string,
+    id: number,
+    balance: number,
+    email: string
+  }
+}
+
+const Profile:React.FC<IProfile> = ({profile}) => {
+  const {name, id, balance, email} = profile;
 
   return (
       <div className="profile-page">
@@ -9,7 +18,6 @@ const Profile = (props) => {
 
         <div className="card">
           <div className="card-body">
-
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <span className="mr-1 text-muted">name:</span>
@@ -28,7 +36,6 @@ const Profile = (props) => {
                 <span className="text-info">{balance}</span>
               </li>
             </ul>
-
           </div>
         </div>
       </div>

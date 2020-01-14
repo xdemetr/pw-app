@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import RegistrationForm from './RegistrationForm';
-import {registration} from '../../../../store/reducers/auth-reducer';
 import {compose} from 'redux';
 import {getAuth} from '../../../../store/selectors';
 import {Redirect} from 'react-router-dom';
+import {registration} from '../../../../store/actions/auth';
 
 const Registration = (props) => {
 

@@ -1,7 +1,14 @@
 import React from 'react';
 
-const Paginator = React.memo(({totalItemsCount, pageSize, currentPage, onPageChanged}) => {
-  let pagesCount = Math.ceil(totalItemsCount / pageSize);
+interface Props {
+  totalItemsCount: number,
+  pageSize: number,
+  currentPage: number,
+  onPageChanged: (page: number) => void
+}
+
+const Paginator:React.FC<Props> = React.memo(({totalItemsCount, pageSize, currentPage, onPageChanged}) => {
+  let pagesCount:number = Math.ceil(totalItemsCount / pageSize);
 
   let pages = [];
   for (let i = 1; i <= pagesCount; i++) {

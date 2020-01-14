@@ -1,32 +1,34 @@
 import React from 'react';
 import {Link, NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {logout} from '../../store/reducers/auth-reducer';
 import s from './AppHeader.module.css';
 import {getAuth} from '../../store/selectors';
+import IAppHeader from '../../models/IAppHeader';
+import {logoutUser} from '../../store/actions/auth';
 
-const AppHeader = (props) => {
+const AppHeader: React.FC<IAppHeader> = (
+    {auth: {profile, isAuth}, logoutUser}
+) => {
 
-  const {name, balance} = props.auth.profile;
-  const {isAuth} = props.auth;
+  const {name, balance} = profile;
 
   const onLogout = () => {
-    props.logout()
+    logoutUser()
   };
 
   const userGuest = (
-        <React.Fragment>
-          <li className="nav-item">
-            <NavLink to={"/login"} className="nav-link" activeClassName={"active"}>Login</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/registration"} className="nav-link" activeClassName={"active"}>Registration</NavLink>
-          </li>
-        </React.Fragment>
-    );
+      <>
+        <li className="nav-item">
+          <NavLink to={"/login"} className="nav-link" activeClassName={"active"}>Login</NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to={"/registration"} className="nav-link" activeClassName={"active"}>Registration</NavLink>
+        </li>
+      </>
+  );
 
   const userAuth = (
-      <React.Fragment>
+      <>
         <li className="nav-item mr-2">
           <NavLink to="/transaction-add" className=" btn btn-info pt-1 pb-1">
             <span className="badge badge-pill badge-light mr-1">+</span>
@@ -50,8 +52,8 @@ const AppHeader = (props) => {
         <li className="nav-item">
           <Link to="/" className="nav-link" onClick={onLogout}>Logout</Link>
         </li>
-      </React.Fragment>
-    );
+      </>
+  );
 
   const renderItems = isAuth ? userAuth : userGuest;
 
@@ -61,17 +63,17 @@ const AppHeader = (props) => {
           <NavLink to={"/"} className="navbar-brand">Parrow Wings</NavLink>
 
           <div className="collapse navbar-collapse">
-              <ul className="navbar-nav ml-auto align-items-center">
-                {renderItems}
-              </ul>
+            <ul className="navbar-nav ml-auto align-items-center">
+              {renderItems}
+            </ul>
           </div>
         </div>
       </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  auth: getAuth(state) //TODO: profile hide when reload app
+const mapStateToProps = (state: any) => ({
+  auth: getAuth(state)
 });
 
-export default connect(mapStateToProps, {logout})(AppHeader);
+export default connect(mapStateToProps, {logoutUser})(AppHeader);

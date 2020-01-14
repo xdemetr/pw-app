@@ -1,6 +1,6 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
-import {AutoInput, Input} from '../../../Form/Input';
+import {Input} from '../../../Form/Input';
 import {positiveNumber, required} from '../../../../utils/validators';
 import Error from '../../../Error';
 
@@ -12,7 +12,8 @@ const AddTransactionForm = ({handleSubmit, error, suggestions, onSuggestionsFetc
 
         <Field
             name={'name'}
-            component={AutoInput}
+            // component={AutoInput}
+            component={Input}
             placeholder={'Recipient name'}
             autoComplete={"off"}
             validate={[required]}

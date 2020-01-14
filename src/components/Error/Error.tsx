@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Error = ({message}) => {
+const Error: React.FC<{message?: string}> = ({message}) => {
 
   if(!message) return null;
 

@@ -1,19 +1,16 @@
-import React, {Component} from 'react';
+import * as React from 'react'
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {getAuth, getProfile} from '../../../store/selectors';
 import Profile from './Profile';
 import {withAuthRedirect} from '../../../hoc';
-import {getAuthUser} from '../../../store/reducers/auth-reducer';
+import {getAuthUser} from '../../../store/actions/auth';
 
+const ProfileContainer:React.FC<{auth: any}> = ({auth}) => {
+  return <Profile profile={auth.profile}/>
+};
 
-class ProfileContainer extends Component {
-  render() {
-    return <Profile profile={this.props.auth.profile} />
-  }
-}
-
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state:any) => ({
   auth: getAuth(state),
   profile: getProfile(state)
 });
